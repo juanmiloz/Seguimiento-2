@@ -2,8 +2,6 @@ package ui;
 import java.util.Scanner; 
 import model.*;
 import java.util.InputMismatchException;
-import exceptions.IdentifyCardException;
-import exceptions.numberIdentificationException;
 
 public class Menu {
 	private Scanner in = new Scanner(System.in);
@@ -46,79 +44,29 @@ public class Menu {
 	}
 	
 	public void newPerson() {
-		String typeDocument = "";
-		int numberDocument = 0; 
-		int numberTypeDocument = 0;
-		boolean continuar2 = true;
-		Client newClient = new Client("",0); 
-		boolean continuar = true;
-		boolean enterDocument = false;
+		int typeDocument;
+		int numberTypeDocument;
+		boolean continuar = false;
+		
+		minimarket.addPerson();
+		
 		do {
 			try {
 				System.out.println("\nQue tipo de documento posee?");
 				System.out.println("(1)<--- Tarjeta de identidad\n(2)<--- Cedula de ciudadania\n(3)<--- Pasaporte\n(4)<--- Cedula extranjera)");
+				typeDocument = in.nextInt();
+				
+				System.out.println("\nIngrese el numero del documento");
 				numberTypeDocument = in.nextInt();
-				if(numberTypeDocument == 1) {
-					typeDocument = "T.I.";
-					newClient.setTypeDocument(typeDocument);
-					newClient.comprobationTypeDocument();
-					continuar = false;
-				}else if(numberTypeDocument == 2) {
-					typeDocument = "C.C.";
-					newClient.setTypeDocument(typeDocument);
-					newClient.comprobationTypeDocument();
-					continuar = false; 
-					enterDocument = true;
-				}else if(numberTypeDocument == 3) {
-					typeDocument = "P.P.";
-					newClient.setTypeDocument(typeDocument);
-					newClient.comprobationTypeDocument();
-					continuar = false; 
-					enterDocument = true;
-				}else if(numberTypeDocument == 4) {
-					typeDocument = "C.E.";
-					newClient.setTypeDocument(typeDocument);
-					newClient.comprobationTypeDocument();
-					continuar = false; 
-					enterDocument = true;
-				}else {
-					System.out.println("Ingrese una de las 4 opciones");
-				}				
+				
+				continuar=minimarket.dataPerson(typeDocument, numberTypeDocument, dayMonth);
+
 			}catch(InputMismatchException ime) {
-				System.err.println("Ingrese un valor numerico");
+				System.err.println("Ingrese valores validos");
+				continuar = true;
 				in.nextLine();
-			}catch(IdentifyCardException ice) {
-				System.err.println("Es menor de edad no puede ingresar al minimercado");
-				continuar = false;
 			}
 		}while(continuar);
-		boolean verify = true;
-		if (enterDocument){
-			do {
-				try {
-					System.out.println("\nIngrese el numero del documento");
-					numberDocument = in.nextInt();
-					in.nextLine();
-					newClient = new Client(typeDocument, numberDocument);
-					newClient.comprobationExitPermit(dayMonth);
-					continuar2 = false;
-				}catch(InputMismatchException ime) {
-					System.err.println("Ingrese un documento valido");
-					in.nextLine();
-				}catch(numberIdentificationException nce) {
-					System.err.println("Usted no tiene permiso de salir hoy");
-					continuar2 = false;
-					verify = false;
-				}
-			}while(continuar2);
-
-		}
-		
-		minimarket.addPerson();
-		if(!newClient.getTypeDocument().equalsIgnoreCase("t.i.") && verify) {
-			minimarket.addInfoPerson(newClient);
-			System.out.println("Sus datos han sido ingresados exitosamente");
-		}
 	}
 	
 	public void consultNumberPerson() {
