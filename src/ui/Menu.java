@@ -20,26 +20,31 @@ public class Menu {
 	public void menu() {
 		int option; 
 		
-		System.out.println("\nBienvenido al Minimercado Mi Barrio Te Quiere");
-		System.out.println("Menu de opciones");
-		System.out.println("(1)<--- Ingresar una nueva persona");
-		System.out.println("(2)<--- Consultar cantidad de personas que han intentado ingresar");
-		System.out.println("(3)<--- Salir del programa");
-		option = in.nextInt();
-			
-		switch(option){
+		try {
+			System.out.println("\nBienvenido al Minimercado Mi Barrio Te Quiere");
+			System.out.println("Menu de opciones");
+			System.out.println("(1)<--- Ingresar una nueva persona");
+			System.out.println("(2)<--- Consultar cantidad de personas que han intentado ingresar");
+			System.out.println("(3)<--- Salir del programa");
+			option = in.nextInt();
 				
-			case NEW_PERSON:
-				 newPerson();
-			break;
-				
-			case CONSULT_NUMBER_PERSON:
-				consultNumberPerson();
-			break;
-				
-			case EXIT:
-				exit();
-			break;
+			switch(option){
+					
+				case NEW_PERSON:
+					 newPerson();
+				break;
+					
+				case CONSULT_NUMBER_PERSON:
+					consultNumberPerson();
+				break;
+					
+				case EXIT:
+					exit();
+				break;
+			}
+		}catch(InputMismatchException ime) {
+			System.err.println("Ingrese datos numericos porfavor");
+			in.nextLine();
 		}
 	}
 	
@@ -59,7 +64,7 @@ public class Menu {
 				System.out.println("\nIngrese el numero del documento");
 				numberTypeDocument = in.nextInt();
 				
-				continuar=minimarket.dataPerson(typeDocument, numberTypeDocument, dayMonth);
+				continuar=minimarket.addDataPerson(typeDocument, numberTypeDocument, dayMonth);
 
 			}catch(InputMismatchException ime) {
 				System.err.println("Ingrese valores validos");

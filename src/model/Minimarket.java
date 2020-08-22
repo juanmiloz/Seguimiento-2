@@ -1,5 +1,6 @@
 package model;
 import java.util.ArrayList;
+import java.util.List;
 import exceptions.IdentifyCardException;
 import exceptions.numberIdentificationException;
 import exceptions.OptionNoValidException;
@@ -21,6 +22,10 @@ public class Minimarket {
 		return numberPersons; 
 	}
 	
+	public List<Client> getClient(){
+		return peapleEntry;
+	} 
+	
 	public void addPerson() {
 		int newPerson = 1;
 		newPerson += getNumberPersons();
@@ -38,7 +43,7 @@ public class Minimarket {
 		}
 	}
 	
-	public boolean dataPerson(int numberTypeDocument, int numberDocument, int dayMonth) {
+	public boolean addDataPerson(int numberTypeDocument, int numberDocument, int dayMonth) {
 		String typeDocument = "";
 		Client newClient;
 		boolean repeat = false;
