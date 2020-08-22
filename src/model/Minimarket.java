@@ -43,46 +43,29 @@ public class Minimarket {
 		}
 	}
 	
-	public boolean addDataPerson(int numberTypeDocument, int numberDocument, int dayMonth) {
+	public String addDataPerson(int numberTypeDocument, int numberDocument, int dayMonth)throws IdentifyCardException, numberIdentificationException, OptionNoValidException{
 		String typeDocument = "";
 		Client newClient;
-		boolean repeat = false;
-		boolean addInfo = true;
 		
-		try {
-			if(numberTypeDocument == 1) {
-				typeDocument = "T.I.";
-				newClient = new Client(typeDocument, numberDocument);
-				newClient.comprobationTypeDocument();
-			}else if(numberTypeDocument == 2) {
-				typeDocument = "C.C.";
-			}else if(numberTypeDocument == 3) {
-				typeDocument = "P.P.";
-			}else if(numberTypeDocument == 4) {
-				typeDocument = "C.E.";
-			}else {
-				comprobationOptionValid(numberTypeDocument);
-			}
+	
+		if(numberTypeDocument == 1) {
+			typeDocument = "T.I.";
 			newClient = new Client(typeDocument, numberDocument);
-			newClient.comprobationExitPermit(dayMonth);
-		}catch(IdentifyCardException ice) {
-			System.err.println("Es menor de edad no puede ingresar al minimercado");
-			addInfo = false;
-		}catch(OptionNoValidException ove) {
-			System.err.println("Ingrese una opcion valida");
-			addInfo = false;
-			repeat = true;
-		}catch(numberIdentificationException nce) {
-			System.err.println("Usted no tiene permiso de salir hoy");
-			addInfo = false;
+			newClient.comprobationTypeDocument();
+		}else if(numberTypeDocument == 2) {
+			typeDocument = "C.C.";
+		}else if(numberTypeDocument == 3) {
+			typeDocument = "P.P.";
+		}else if(numberTypeDocument == 4) {
+			typeDocument = "C.E.";
+		}else {
+			comprobationOptionValid(numberTypeDocument);
 		}
-		
 		newClient = new Client(typeDocument, numberDocument);
-		if(addInfo) {
-			addInfoPerson(newClient);
-			System.out.println("\nSi puede ingresar al local\nSus datos seran almacenados por motivos de seguridad");
-		}
+		newClient.comprobationExitPermit(dayMonth);
 		
-		return repeat;
+		
+		
+		return typeDocument;
 	}
 }

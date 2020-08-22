@@ -1,5 +1,9 @@
 package ui;
-import java.util.Scanner; 
+import java.util.Scanner;
+
+import exceptions.IdentifyCardException;
+import exceptions.OptionNoValidException;
+import exceptions.numberIdentificationException;
 import model.*;
 import java.util.InputMismatchException;
 
@@ -50,8 +54,10 @@ public class Menu {
 	
 	public void newPerson() {
 		int typeDocument;
-		int numberTypeDocument;
+		int numberTypeDocument = 0;
 		boolean continuar = false;
+		boolean addInfo = true;
+		String nameDocument = null;
 		
 		minimarket.addPerson();
 		
@@ -64,12 +70,28 @@ public class Menu {
 				System.out.println("\nIngrese el numero del documento");
 				numberTypeDocument = in.nextInt();
 				
-				continuar=minimarket.addDataPerson(typeDocument, numberTypeDocument, dayMonth);
+				nameDocument = minimarket.addDataPerson(typeDocument, numberTypeDocument, dayMonth);
 
 			}catch(InputMismatchException ime) {
 				System.err.println("Ingrese valores validos");
 				continuar = true;
 				in.nextLine();
+			}catch(IdentifyCardException ice) {
+				System.err.println("Es menor de edad no puede ingresar al minimercado");
+				addInfo = false;
+			}catch(OptionNoValidException ove) {
+				System.err.println("Ingrese una opcion valida");
+				addInfo = false;
+			}catch(numberIdentificationException nce) {
+				System.err.println("Usted no tiene permiso de salir hoy");
+				addInfo = false;
+			}
+			
+			Client newClient = new Client(nameDocument,numberTypeDocument);
+			
+			if(addInfo) {
+				minimarket.addInfoPerson(newClient);
+				System.out.println("\nSi puede ingresar al local\nSus datos seran almacenados por seguridad");
 			}
 		}while(continuar);
 	}

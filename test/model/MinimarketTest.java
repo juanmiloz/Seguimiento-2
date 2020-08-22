@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import exceptions.IdentifyCardException;
 import exceptions.numberIdentificationException;
+import exceptions.OptionNoValidException;
 
 class MinimarketTest {
 	
@@ -23,7 +24,16 @@ class MinimarketTest {
 		int N = 8723982;
 		int dayMonth = 21;
 		
-		newMinimarket.addDataPerson(TD,N,dayMonth);
+		try {
+			newMinimarket.addDataPerson(TD,N,dayMonth);
+		} catch(IdentifyCardException ice) {
+		 	System.out.println("1");
+		} catch(OptionNoValidException ove) {
+			System.out.println("2");
+		} catch(numberIdentificationException nie) {
+			System.out.println("3");
+		}
+		
 		
 		if(newMinimarket.getClient().get(0).getTypeDocument().equalsIgnoreCase("C.C.")) {
 			comprobation1 = true;
@@ -37,23 +47,22 @@ class MinimarketTest {
 		assertTrue(comprobationF);
 	}
 	
-	/*Profe en el enunciado del seguimiento decia que 
-	 hicieramos las pruebas con el metodo del modelo que agrega
-	 a una persona, pero con ese metodo como lo tengo no puedo hacer las pruebas
-	 unitarias 2 y 3 debido a que ese metodo no me arroja una excepcion lo hace 
-	 otro metodo que esta dentro del primero, entonces no lo lee correctamente.
-	 */
 	@Test
 	void testDataPerson2() {
+		Minimarket newMinimarket = setupStage1();
 		boolean comprobation = false;
-		String D = "T.I.";
+		int D = 1;
 		int N = 123324;
-		Client newClient = new Client(D,N);
+		int dayMonth = 21;
 		
 		try {
-			newClient.comprobationTypeDocument();
+			newMinimarket.addDataPerson(D, N, dayMonth);
 		} catch(IdentifyCardException ice) {
 			comprobation = true;
+		} catch(OptionNoValidException ove) {
+			comprobation = false;
+		} catch(numberIdentificationException nie) {
+			comprobation = false; 
 		}
 		assertTrue(comprobation);	
 	}
@@ -61,15 +70,19 @@ class MinimarketTest {
 	@Test
 	void testDataPerson3() {
 		boolean comprobation = false;
-		String D = "C.C.";
+		Minimarket newMinimarket = setupStage1();
+		int D = 2;
 		int N = 9823781;
 		int dayMonth = 21;
-		Client newClient = new Client(D,N);
 	
 		try {
-			newClient.comprobationExitPermit(dayMonth);
+			newMinimarket.addDataPerson(D, N, dayMonth);
 		} catch(numberIdentificationException nie) {
 			comprobation = true;
+		} catch(OptionNoValidException ove) {
+			comprobation = false;
+		} catch(IdentifyCardException ice) {
+			comprobation = false;
 		}
 		assertTrue(comprobation);	
 	}
